@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bjsxt.mapper.RevenueMapper">
+  <resultMap id="IncomeBaseResultMap" type="com.bjsxt.domain.Income">
+    <result column="order_amount" property="orderAmount" />
+    <result column="pay_type"  property="payType" />
+  </resultMap>
+  <resultMap id="RefundBaseResultMap" type="com.bjsxt.domain.Refund">
+    <result column="back_amount" property="backAmount" />
+    <result column="back_type"  property="backType" />
+  </resultMap>
+  <sql id="Income_Base_Column_List">
+    order_amount, pay_type
+  </sql>
+  <sql id="Refund_Base_Column_List">
+    back_amount, back_type
+  </sql>
+
+  <!--查询收入-->
+  <select id="queryIncome" resultMap="IncomeBaseResultMap">
+  select
+  <include refid="Income_Base_Column_List"></include>
+   from his_order_charge
+   <where>
+    order_status='1'
+        <if test="revenue.queryDate!=null and revenue.queryDate!=''">
+          and date_format(create_time,'%Y-%m-%d') =#{revenue.queryDate}
+        </if>
+        <if test="revenue.beginTime!=null">
+            and create_time>=#{revenue.beginTime}
+        </if>
+        <if test="revenue.endTime!=null">
+            and create_time <![CDATA[
+                        <=
+            ]]>
+            #{revenue.endTime}
+        </if>
+      </where>
+    </select>
+    <!--查询退费的-->
+    <select id="queryRefund" resultMap="RefundBaseResultMap">
+      select <include refid="Refund_Base_Column_List"></include>
+      from his_order_backfee
+      <where>
+        back_status='1'
+        <if test="revenue.queryDate!=null and revenue.queryDate!=''">
+          and date_format(create_time,'%Y-%m-%d') =#{revenue.queryDate}
+        </if>
+        <if test="revenue.beginTime!=null">
+            and create_time>=#{revenue.beginTime}
+        </if>
+        <if test="revenue.endTime!=null">
+            and create_time <![CDATA[
+                        <=
+            ]]>
+            #{revenue.endTime}
+        </if>
+      </where>
+    </select>
+</mapper>

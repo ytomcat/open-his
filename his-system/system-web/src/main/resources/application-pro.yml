@@ -1,0 +1,85 @@
+#端口
+server:
+  port: 8080
+#spring的配置
+spring:
+  #数据源的配置
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://47.97.82.55:3307/bjsxt-his?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
+    username: root
+    password: 123456
+    #注入数据源的类型   默认的为HikariDataSource
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      max-active: 20
+      min-idle: 5
+      validation-query: select x
+      initial-size: 3
+      max-wait: 5000
+      stat-view-servlet:
+        #        login-username: root
+        #        login-password: 123456
+        allow:
+        deny:
+        url-pattern: /druid/*
+        enabled: true  #启用数据源监控
+  #配置redis
+  redis:
+    port: 6390
+    host: 47.97.82.55
+    password: 123456
+  mvc:
+    date-format: yyyy-MM-dd HH:mm:ss
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+
+#shiro配置
+shiro:
+  anon-urls:
+    - /login/doLogin*
+    - /login/captcha*
+    - /login/logout*
+    - /druid/**
+    - /pay/callback/**
+  authc-urls:
+    - /**
+#mybatisplus的配置
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  mapper-locations: classpath:mapper/*Mapper.xml
+  global-config:
+    db-config:
+      id-type: auto
+#fastdfs的配置
+fdfs:
+  so-timeout: 6000    #修改之后的
+  connect-timeout: 6000    # 修改之后的
+  thumb-image:
+    height: 150
+    width: 150
+  tracker-list:          # tracker服务配置地址列表
+    - 47.97.82.55:22122
+upload:
+  base-url: http://47.97.82.55:8888
+  allow-types:
+    - image/jpeg
+    - image/png
+    - image/bmp
+#dubbo配置
+dubbo:
+  application:
+    name: his-system-web-service
+  registry:
+    address: zookeeper://47.97.82.55:2181
+    timeout: 100000
+  protocol:
+    name: dubbo
+    port: -1
+  consumer:
+    check: false
+  config-center:
+    timeout: 45000
+
