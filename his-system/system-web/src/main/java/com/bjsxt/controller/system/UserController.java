@@ -38,7 +38,7 @@ public class UserController {
      */
     @PostMapping("addUser")
     @Log(title = "添加用户",businessType = BusinessType.INSERT)
-    public AjaxResult addUser(@Validated UserDto userDto) {
+    public AjaxResult addUser(@Validated @RequestBody UserDto userDto) {
         userDto.setSimpleUser(ShiroSecurityUtils.getCurrentSimpleUser());
         return AjaxResult.toAjax(this.userService.addUser(userDto));
     }
@@ -48,7 +48,7 @@ public class UserController {
      */
     @PutMapping("updateUser")
     @Log(title = "修改用户",businessType = BusinessType.UPDATE)
-    public AjaxResult updateUser(@Validated UserDto userDto) {
+    public AjaxResult updateUser(@Validated @RequestBody UserDto userDto) {
         userDto.setSimpleUser(ShiroSecurityUtils.getCurrentSimpleUser());
         return AjaxResult.toAjax(this.userService.updateUser(userDto));
     }

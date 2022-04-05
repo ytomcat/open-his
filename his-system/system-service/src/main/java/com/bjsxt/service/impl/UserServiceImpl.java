@@ -1,6 +1,5 @@
 package com.bjsxt.service.impl;
 
-import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.date.DateUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -13,6 +12,7 @@ import com.bjsxt.service.UserService;
 import com.bjsxt.utils.AppMd5Utils;
 import com.bjsxt.vo.DataGridView;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -65,11 +65,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public int addUser(UserDto userDto) {
         User user = new User();
-        BeanUtil.copyProperties(userDto, user);
+        BeanUtils.copyProperties(userDto, user);
         user.setUserType(Constants.USER_NORMAL);//用户类型是系统用户
         String defaultPwd = user.getPhone().substring(5);
         user.setCreateBy(userDto.getSimpleUser().getUserName());
         user.setCreateTime(DateUtil.date());
+        user.setDeptId(Long.valueOf(userDto.getDeptId().get(0)));
+        user.setOutpatientId(Long.valueOf(userDto.getDeptId().get(1)));
         user.setSalt(AppMd5Utils.createSalt());
         user.setPassword(AppMd5Utils.md5(defaultPwd, user.getSalt(), 2));
         return this.userMapper.insert(user);
@@ -90,7 +92,9 @@ public class UserServiceImpl implements UserService {
         if (null == user) {
             return 0;
         }
-        BeanUtil.copyProperties(userDto, user);
+        BeanUtils.copyProperties(userDto, user);
+        user.setDeptId(Long.valueOf(userDto.getDeptId().get(0)));
+        user.setOutpatientId(Long.valueOf(userDto.getDeptId().get(1)));
         //设置修改人
         user.setUpdateBy(userDto.getSimpleUser().getUserName());
         return this.userMapper.updateById(user);

@@ -2,6 +2,7 @@ package com.bjsxt.service;
 
 import com.bjsxt.domain.Dept;
 import com.bjsxt.dto.DeptDto;
+import com.bjsxt.response.BuilderTreeDept;
 import com.bjsxt.vo.DataGridView;
 
 import java.util.List;
@@ -61,6 +62,7 @@ public interface DeptService {
 
     /**
      * 根据部门ID集合查询部门信息
+     *
      * @param deptIds
      * @return
      */
@@ -68,8 +70,15 @@ public interface DeptService {
 
     /**
      * 根据部门ID更新号段
+     *
      * @param deptId
      * @param i
      */
     void updateDeptRegNumber(Long deptId, int i);
+
+    /**
+     * 构建科室树形结构
+     * @return
+     */
+    List<BuilderTreeDept> builderTreeDept();
 }

@@ -1,10 +1,5 @@
 package com.bjsxt.dto;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
-import com.bjsxt.domain.BaseEntity;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -14,18 +9,18 @@ import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.util.Date;
+import java.util.List;
 
 /**
-* @Author: 尚学堂 雷哥
-*/
+ * @Author: 尚学堂 雷哥
+ */
 
 /**
-    * 用户信息表
-    */
-@ApiModel(value="com-bjsxt-dto-UserDto")
+ * 用户信息表
+ */
+@ApiModel(value = "com-bjsxt-dto-UserDto")
 @Data
-@EqualsAndHashCode(callSuper=true)
+@EqualsAndHashCode(callSuper = true)
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserDto extends BaseDto {
@@ -40,7 +35,7 @@ public class UserDto extends BaseDto {
      */
     @NotNull(message = "用户所属部门不能为空")
     @ApiModelProperty(value = "部门ID")
-    private Long deptId;
+    private List<String> deptId;
 
     /**
      * 用户名

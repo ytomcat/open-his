@@ -6,9 +6,9 @@ spring:
   #数据源的配置
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/bjsxt-his?useUnicode=true&characterEncodeing=UTF-8&useSSL=false&serverTimezone=GMT
-    username: root
-    password: root
+    url: jdbc:mysql://rm-bp1637o574j7oqkhgbo.mysql.rds.aliyuncs.com:3306/hospital?useUnicode=true&characterEncodeing=UTF-8&useSSL=false&serverTimezone=GMT
+    username: admin_user
+    password: Huang5583
     #注入数据源的类型   默认的为HikariDataSource
     type: com.alibaba.druid.pool.DruidDataSource
     druid:

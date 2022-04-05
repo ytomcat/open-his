@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bjsxt.mapper.OutpatientMapper">
+    <resultMap id="BaseResultMap" type="com.bjsxt.domain.Outpatient">
+        <!--@mbg.generated-->
+        <!--@Table sys_dept-->
+        <id column="id" jdbcType="BIGINT" property="deptId"/>
+        <result column="outpatientName" jdbcType="VARCHAR" property="outpatient_name"/>
+        <result column="deptId" jdbcType="INTEGER" property="dept_id"/>
+        <result column="gmtCreate" jdbcType="DATE" property="gmt_create"/>
+        <result column="gmtModified" jdbcType="DATE" property="gmt_modified"/>
+    </resultMap>
+</mapper>

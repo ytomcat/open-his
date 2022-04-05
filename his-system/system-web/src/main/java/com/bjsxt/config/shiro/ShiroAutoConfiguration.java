@@ -158,7 +158,7 @@ public class ShiroAutoConfiguration {
     public RedisSessionDAO redisSessionDAO(IRedisManager redisManager) {
         RedisSessionDAO redisSessionDAO = new RedisSessionDAO();
         redisSessionDAO.setRedisManager(redisManager); //操作那个redis
-        redisSessionDAO.setExpire(7 * 24 * 3600); // 用户的登录信息保存多久？ 7 天
+        redisSessionDAO.setExpire(30 * 24 * 3600); // 用户的登录信息保存多久？ 7 天
         return redisSessionDAO;
     }
 
