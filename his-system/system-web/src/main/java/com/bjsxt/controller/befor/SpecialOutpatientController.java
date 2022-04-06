@@ -31,6 +31,9 @@ public class SpecialOutpatientController {
     @Autowired
     private DeptService deptService;
 
+
+
+
     @Autowired
     private OutpatientService outpatientService;
 
