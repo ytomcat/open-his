@@ -9,6 +9,7 @@ import com.bjsxt.vo.AjaxResult;
 import io.swagger.annotations.ApiModelProperty;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -37,7 +38,7 @@ public class SpecialOutpatientController {
     @Autowired
     private OutpatientService outpatientService;
 
-    @GetMapping("/builderTreeDept")
+    @PostMapping("/builderTreeDept")
     @ApiModelProperty(value = "构建部门树形结构")
     public AjaxResult builderTreeDept() {
         List<BuilderTreeDept> builderTreeDept = this.deptService.builderTreeDept();

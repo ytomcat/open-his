@@ -25,11 +25,11 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    /**
+    /**t
      * 分页查询
      */
-    @GetMapping("listUserForPage")
-    public AjaxResult listUserForPage(UserDto userDto){
+    @PostMapping("listUserForPage")
+    public AjaxResult listUserForPage(@RequestBody UserDto userDto){
         DataGridView gridView = this.userService.listUserForPage(userDto);
         return AjaxResult.success("查询成功",gridView.getData(),gridView.getTotal());
     }

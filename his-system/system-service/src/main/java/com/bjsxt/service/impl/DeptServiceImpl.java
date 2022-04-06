@@ -2,7 +2,9 @@ package com.bjsxt.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.date.DateUtil;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.bjsxt.constants.Constants;
 import com.bjsxt.domain.Dept;
@@ -11,6 +13,7 @@ import com.bjsxt.mapper.DeptMapper;
 import com.bjsxt.response.BuilderTreeDept;
 import com.bjsxt.service.DeptService;
 import com.bjsxt.vo.DataGridView;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -107,5 +110,18 @@ public class DeptServiceImpl implements DeptService {
     public List<BuilderTreeDept> builderTreeDept() {
         List<BuilderTreeDept> builderTreeDept = this.deptMapper.builderTreeDept();
         return builderTreeDept;
+    }
+
+    @Override
+    public boolean hasChildByMenuId(Long[] deptIds) {
+        LambdaQueryWrapper<Dept> queryWrapper = Wrappers.<Dept>lambdaQuery().in(CollectionUtils.isNotEmpty(Arrays.asList(deptIds)), Dept::getParentId, deptIds);
+        List<Dept> depts = this.deptMapper.selectList(queryWrapper);
+        return depts.size() > 0;
+    }
+
+    @Override
+    public List<Dept> selectAllOut() {
+        LambdaQueryWrapper<Dept> queryWrapper = Wrappers.<Dept>lambdaQuery().eq(Dept::getStatus, Constants.STATUS_TRUE).orderByAsc(Dept::getOrderNum);
+        return this.deptMapper.selectList(queryWrapper);
     }
 }

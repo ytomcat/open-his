@@ -35,6 +35,13 @@ public class DeptDto extends BaseDto {
     @ApiModelProperty(value="部门科室id")
     private Long deptId;
 
+    @TableId(value = "parent_id")
+    @ApiModelProperty(value = "父级ID")
+    private Long parentId;
+
+    @TableId(value = "parent_ids")
+    @ApiModelProperty(value = "父级菜单集合")
+    private String parentIds;
     /**
      * 部门名称
      */
@@ -45,7 +52,7 @@ public class DeptDto extends BaseDto {
     /**
      * 挂号编号
      */
-    @NotBlank(message = "挂号编号不能为空")
+    @NotNull(message = "挂号编号不能为空")
     @ApiModelProperty(value="挂号编号")
     private Integer regNumber;
 

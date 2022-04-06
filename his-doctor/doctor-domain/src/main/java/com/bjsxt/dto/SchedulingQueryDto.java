@@ -1,6 +1,8 @@
 package com.bjsxt.dto;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,6 +22,8 @@ public class SchedulingQueryDto implements Serializable {
     private Long userId;//用户ID
 
     private Long deptId;//部门ID
+
+    private Long outpatientId;//门诊ID
 
     //页面传过来的上一周  下一周的值
     private String queryDate;

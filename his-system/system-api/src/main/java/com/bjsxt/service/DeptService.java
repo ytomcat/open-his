@@ -78,7 +78,13 @@ public interface DeptService {
 
     /**
      * 构建科室树形结构
+     *
      * @return
      */
     List<BuilderTreeDept> builderTreeDept();
+
+    boolean hasChildByMenuId(Long[] deptIds);
+
+    List<Dept> selectAllOut();
+
 }

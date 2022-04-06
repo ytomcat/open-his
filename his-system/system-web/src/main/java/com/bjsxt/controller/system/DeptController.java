@@ -28,17 +28,18 @@ public class DeptController {
     /**
      * 分页查询
      */
-    @GetMapping("listDeptForPage")
-    public AjaxResult listDeptForPage(DeptDto deptDto){
+    @PostMapping("listDeptForPage")
+    public AjaxResult listDeptForPage(@RequestBody DeptDto deptDto) {
         DataGridView gridView = this.deptService.listPage(deptDto);
-        return AjaxResult.success("查询成功",gridView.getData(),gridView.getTotal());
+        return AjaxResult.success("查询成功", gridView.getData(), gridView.getTotal());
     }
+
     /**
      * 添加
      */
     @PostMapping("addDept")
-    @Log(title = "添加科室",businessType = BusinessType.INSERT)
-    public AjaxResult addDept(@Validated DeptDto deptDto) {
+    @Log(title = "添加科室", businessType = BusinessType.INSERT)
+    public AjaxResult addDept(@Validated @RequestBody DeptDto deptDto) {
         deptDto.setSimpleUser(ShiroSecurityUtils.getCurrentSimpleUser());
         return AjaxResult.toAjax(this.deptService.addDept(deptDto));
     }
@@ -47,8 +48,8 @@ public class DeptController {
      * 修改
      */
     @PutMapping("updateDept")
-    @Log(title = "修改科室",businessType = BusinessType.UPDATE)
-    public AjaxResult updateDept(@Validated DeptDto deptDto) {
+    @Log(title = "修改科室", businessType = BusinessType.UPDATE)
+    public AjaxResult updateDept(@Validated @RequestBody DeptDto deptDto) {
         deptDto.setSimpleUser(ShiroSecurityUtils.getCurrentSimpleUser());
         return AjaxResult.toAjax(this.deptService.updateDept(deptDto));
     }
@@ -66,8 +67,11 @@ public class DeptController {
      * 删除
      */
     @DeleteMapping("deleteDeptByIds/{deptIds}")
-    @Log(title = "删除科室",businessType = BusinessType.DELETE)
+    @Log(title = "删除科室", businessType = BusinessType.DELETE)
     public AjaxResult deleteDeptByIds(@PathVariable @Validated @NotEmpty(message = "要删除的ID不能为空") Long[] deptIds) {
+        if(this.deptService.hasChildByMenuId(deptIds)){
+            return AjaxResult.fail("当前要删除的部门有子节点，请先删除子节点");
+        }
         return AjaxResult.toAjax(this.deptService.deleteDeptByIds(deptIds));
     }
 
@@ -75,8 +79,16 @@ public class DeptController {
      * 查询所有可用的科室
      */
     @GetMapping("selectAllDept")
-    public AjaxResult selectAllDept(){
+    public AjaxResult selectAllDept() {
         return AjaxResult.success(this.deptService.list());
+    }
+
+    /**
+     * 查询所有可用的诊室
+     */
+    @GetMapping("selectAllOut")
+    public AjaxResult selectAllOut() {
+        return AjaxResult.success(this.deptService.selectAllOut());
     }
 
 }

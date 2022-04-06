@@ -30,6 +30,7 @@ public class SchedulingFormDto implements Serializable {
     public static class SchedulingData implements  Serializable{
         private Long userId;
         private Long deptId;
+        private Long outpatientId;//门诊ID
         private String subsectionType;//上  下  晚
         //星期几的值班值
         private Collection<String> schedulingType;
