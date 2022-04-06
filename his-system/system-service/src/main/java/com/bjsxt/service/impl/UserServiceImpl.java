@@ -53,8 +53,12 @@ public class UserServiceImpl implements UserService {
         qw.like(StringUtils.isNotBlank(userDto.getUserName()), User.COL_USER_NAME, userDto.getUserName());
         qw.like(StringUtils.isNotBlank(userDto.getPhone()), User.COL_PHONE, userDto.getPhone());
         qw.eq(StringUtils.isNotBlank(userDto.getStatus()), User.COL_STATUS, userDto.getStatus());
-        qw.eq(userDto.getDeptId() != null, User.COL_DEPT_ID, userDto.getDeptId());
-
+        if (userDto.getDeptId() != null && 2 == userDto.getDeptId().size()) {
+            qw.eq(User.COL_DEPT_ID, userDto.getDeptId().get(0));
+            qw.eq(User.COL_OUTPATIENT_ID, userDto.getDeptId().get(1));
+        } else if (userDto.getDeptId() != null && 1 == userDto.getDeptId().size()) {
+            qw.eq(User.COL_DEPT_ID, userDto.getDeptId().get(0));
+        }
         qw.ge(null != userDto.getBeginTime(), User.COL_CREATE_TIME, userDto.getBeginTime());
         qw.le(null != userDto.getEndTime(), User.COL_CREATE_TIME, userDto.getEndTime());
         qw.orderByAsc(User.COL_USER_ID);

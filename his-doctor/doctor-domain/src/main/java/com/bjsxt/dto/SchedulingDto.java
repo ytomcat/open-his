@@ -14,7 +14,7 @@ import java.util.Map;
  * @Author: 尚学堂 雷哥
  * 封装页面需要的数据
  */
-@ApiModel(value="com-bjsxt-dto-SchedulingDto")
+@ApiModel(value = "com-bjsxt-dto-SchedulingDto")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -24,25 +24,30 @@ public class SchedulingDto implements Serializable {
 
     private Long deptId;
 
-    private String subsectionType;//上午1  下午2  晚上3
+    private Long outpatientId;
+
+    //上午1  下午2  晚上3
+    private String subsectionType;
 
     private Collection<String> schedulingType;//存放周一到周日的subsectionType时间段 是门诊还是急诊的数据
 
 
     //存放星期值班的记录 key 指日期    周一到周日的日期字符串   value 有值就1  2   没有值就""
     @JsonIgnore
-    private Map<String,String> record;
+    private Map<String, String> record;
 
     /**
      * 构造器
+     *
      * @param userId
      * @param deptId
      * @param subsectionType
      * @param record
      */
-    public SchedulingDto(Long userId, Long deptId, String subsectionType, Map<String, String> record) {
+    public SchedulingDto(Long userId, Long deptId, Long outpatientId, String subsectionType, Map<String, String> record) {
         this.userId = userId;
         this.deptId = deptId;
+        this.outpatientId = outpatientId;
         this.subsectionType = subsectionType;
         this.record = record;
     }

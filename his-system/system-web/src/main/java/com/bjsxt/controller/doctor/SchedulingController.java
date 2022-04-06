@@ -98,9 +98,9 @@ public class SchedulingController extends BaseController {
         List<SchedulingDto> schedulingDtos = new ArrayList<>();
         //根据用户来循环
         for (User user : users) {
-            SchedulingDto schedulingDto1 = new SchedulingDto(user.getUserId(), user.getDeptId(), "1", initMap(beginTime));
-            SchedulingDto schedulingDto2 = new SchedulingDto(user.getUserId(), user.getDeptId(), "2", initMap(beginTime));
-            SchedulingDto schedulingDto3 = new SchedulingDto(user.getUserId(), user.getDeptId(), "3", initMap(beginTime));
+            SchedulingDto schedulingDto1 = new SchedulingDto(user.getUserId(), user.getDeptId(), user.getOutpatientId(), "1", initMap(beginTime));
+            SchedulingDto schedulingDto2 = new SchedulingDto(user.getUserId(), user.getDeptId(), user.getOutpatientId(), "2", initMap(beginTime));
+            SchedulingDto schedulingDto3 = new SchedulingDto(user.getUserId(), user.getDeptId(), user.getOutpatientId(), "3", initMap(beginTime));
             //一个用户的循环放三条数据
             schedulingDtos.add(schedulingDto1);
             schedulingDtos.add(schedulingDto2);
@@ -206,11 +206,10 @@ public class SchedulingController extends BaseController {
      */
     @PostMapping("saveScheduling")
     @HystrixCommand
-    public AjaxResult saveScheduling(@RequestBody SchedulingFormDto schedulingFormDto){
+    public AjaxResult saveScheduling(@RequestBody SchedulingFormDto schedulingFormDto) {
         schedulingFormDto.setSimpleUser(ShiroSecurityUtils.getCurrentSimpleUser());
         return AjaxResult.toAjax(this.schedulingService.saveScheduling(schedulingFormDto));
     }
-
 
 
 }

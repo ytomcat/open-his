@@ -220,6 +220,8 @@ public class User extends BaseEntity {
 
     public static final String COL_DEPT_ID = "dept_id";
 
+    public static final String COL_OUTPATIENT_ID = "outpatient_id";
+
     public static final String COL_USER_NAME = "user_name";
 
     public static final String COL_USER_TYPE = "user_type";
