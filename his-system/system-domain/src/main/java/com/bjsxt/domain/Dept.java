@@ -43,6 +43,11 @@ public class Dept extends BaseEntity {
     @ApiModelProperty(value = "父级菜单集合")
     private String parentIds;
 
+
+    @TableId(value = "project_amount")
+    @ApiModelProperty(value = "项目金额")
+    private String projectAmount;
+
     /**
      * 部门名称
      */
