@@ -7,16 +7,19 @@ import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * @Author: 尚学堂 雷哥
  */
-@ApiModel(value="com-bjsxt-dto-RegistrationQueryDto")
+@ApiModel(value = "com-bjsxt-dto-RegistrationQueryDto")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class RegistrationQueryDto implements Serializable {
-    private Long deptId;//科室ID
+    private List<String> deptId;//科室ID
+    private Long deptmentId;//科室ID
+    private Long outpatientId;//诊室id
     @NotBlank(message = "挂号类型不能为空")
     private String schedulingType;//挂号类型
     @NotBlank(message = "挂号时段不能为空")

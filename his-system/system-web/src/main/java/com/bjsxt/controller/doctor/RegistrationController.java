@@ -21,6 +21,8 @@ import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.dubbo.config.annotation.Reference;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -52,14 +54,15 @@ public class RegistrationController extends BaseController {
      * 1.从排班表里面查询有排班的部门编号集合
      * 2.根据查询出来的部门编号集合再去查询部门
      */
-    @GetMapping("listDeptForScheduling")
+    @PostMapping("listDeptForScheduling")
     @HystrixCommand
-    public AjaxResult listDeptForScheduling(@Validated RegistrationQueryDto registrationQueryDto) {
-        Long deptId = registrationQueryDto.getDeptId();
+    public AjaxResult listDeptForScheduling(@Validated @RequestBody RegistrationQueryDto registrationQueryDto) {
+        Long deptId = registrationQueryDto.getDeptmentId();
+        Long outpatientId = registrationQueryDto.getOutpatientId();
         String subsectionType = registrationQueryDto.getSubsectionType();
         String schedulingType = registrationQueryDto.getSchedulingType();//挂号类型
         String schedulingDay = registrationQueryDto.getSchedulingDay().substring(0, 10);//时间
-        List<Long> deptIds = schedulingService.queryHasSchedulingDeptIds(deptId, schedulingDay, schedulingType, subsectionType);
+        List<Long> deptIds = schedulingService.queryHasSchedulingDeptIds(deptId, outpatientId, schedulingDay, schedulingType, subsectionType);
 
         if (null == deptIds || deptIds.size() == 0) {
             return AjaxResult.success(Collections.EMPTY_LIST);
@@ -90,7 +93,8 @@ public class RegistrationController extends BaseController {
      */
     @PostMapping("addRegistration")
     @HystrixCommand
-    public AjaxResult addRegistration(@RequestBody @Validated RegistrationFormDto registrationFormDto) {
+    public AjaxResult addRegistration(@Validated @RequestBody RegistrationFormDto registrationFormDto) {
+        System.out.println("挂号开始======================");
         PatientDto patientDto = registrationFormDto.getPatientDto();
         RegistrationDto registrationDto = registrationFormDto.getRegistrationDto();
         Patient patient = null;

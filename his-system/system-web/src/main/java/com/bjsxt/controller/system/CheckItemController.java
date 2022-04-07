@@ -28,8 +28,8 @@ public class CheckItemController {
     /**
      * 分页查询
      */
-    @GetMapping("listCheckItemForPage")
-    public AjaxResult listCheckItemForPage(CheckItemDto checkItemDto){
+    @PostMapping("listCheckItemForPage")
+    public AjaxResult listCheckItemForPage(@RequestBody CheckItemDto checkItemDto){
         DataGridView gridView = this.checkItemService.listCheckItemPage(checkItemDto);
         return AjaxResult.success("查询成功",gridView.getData(),gridView.getTotal());
     }
@@ -38,7 +38,7 @@ public class CheckItemController {
      */
     @PostMapping("addCheckItem")
     @Log(title = "添加检查项目",businessType = BusinessType.INSERT)
-    public AjaxResult addCheckItem(@Validated CheckItemDto checkItemDto) {
+    public AjaxResult addCheckItem(@Validated @RequestBody CheckItemDto checkItemDto) {
         checkItemDto.setSimpleUser(ShiroSecurityUtils.getCurrentSimpleUser());
         return AjaxResult.toAjax(this.checkItemService.addCheckItem(checkItemDto));
     }
@@ -46,9 +46,9 @@ public class CheckItemController {
     /**
      * 修改
      */
-    @PutMapping("updateCheckItem")
+    @PostMapping("updateCheckItem")
     @Log(title = "修改检查项目",businessType = BusinessType.UPDATE)
-    public AjaxResult updateCheckItem(@Validated CheckItemDto checkItemDto) {
+    public AjaxResult updateCheckItem(@Validated @RequestBody CheckItemDto checkItemDto) {
         checkItemDto.setSimpleUser(ShiroSecurityUtils.getCurrentSimpleUser());
         return AjaxResult.toAjax(this.checkItemService.updateCheckItem(checkItemDto));
     }

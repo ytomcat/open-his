@@ -20,5 +20,5 @@ public interface SchedulingMapper extends BaseMapper<Scheduling> {
      * @param subsectionType
      * @return
      */
-    List<Long> queryHasSchedulingDeptIds(@Param("deptId") Long deptId, @Param("schedulingDay") String schedulingDay, @Param("schedulingType") String schedulingType, @Param("subsectionType") String subsectionType);
+    List<Long> queryHasSchedulingDeptIds(@Param("deptId") Long deptId,@Param("outpatientId") Long outpatientId, @Param("schedulingDay") String schedulingDay, @Param("schedulingType") String schedulingType, @Param("subsectionType") String subsectionType);
 }

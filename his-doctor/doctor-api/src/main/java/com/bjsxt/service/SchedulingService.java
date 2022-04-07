@@ -7,13 +7,14 @@ import com.bjsxt.dto.SchedulingQueryDto;
 import java.util.List;
 
 /**
-* @Author: 尚学堂 雷哥
-*/
+ * @Author: 尚学堂 雷哥
+ */
 
-public interface SchedulingService{
+public interface SchedulingService {
 
     /**
      * 查询排班数据
+     *
      * @param schedulingQueryDto
      * @return
      */
@@ -21,6 +22,7 @@ public interface SchedulingService{
 
     /**
      * 保存排班数据
+     *
      * @param schedulingFormDto
      * @return
      */
@@ -28,11 +30,12 @@ public interface SchedulingService{
 
     /**
      * 根据条件查询有号的部门编号
+     *
      * @param deptId
      * @param schedulingDay
      * @param schedulingType
      * @param subsectionType
      * @return
      */
-    List<Long> queryHasSchedulingDeptIds(Long deptId, String schedulingDay, String schedulingType, String subsectionType);
+    List<Long> queryHasSchedulingDeptIds(Long deptId, Long outpatientId, String schedulingDay, String schedulingType, String subsectionType);
 }

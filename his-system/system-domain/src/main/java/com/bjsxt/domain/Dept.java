@@ -134,6 +134,8 @@ public class Dept extends BaseEntity {
 
     public static final String COL_DEPT_ID = "dept_id";
 
+    public static final String COL_PARENT_ID = "parent_id";
+
     public static final String COL_DEPT_NAME = "dept_name";
 
     public static final String COL_REG_NUMBER = "reg_number";

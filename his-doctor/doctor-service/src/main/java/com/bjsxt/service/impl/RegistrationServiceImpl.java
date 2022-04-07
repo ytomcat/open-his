@@ -1,6 +1,5 @@
 package com.bjsxt.service.impl;
 
-import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.date.DateUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -10,9 +9,13 @@ import com.bjsxt.dto.RegistrationDto;
 import com.bjsxt.mapper.RegistrationMapper;
 import com.bjsxt.service.RegistrationService;
 import com.bjsxt.vo.DataGridView;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.dubbo.config.annotation.Service;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -28,8 +31,9 @@ public class RegistrationServiceImpl implements RegistrationService {
 
     @Override
     public void addRegistration(RegistrationDto registrationDto) {
+        System.out.println("保存挂号信息开始");
         Registration registration = new Registration();
-        BeanUtil.copyProperties(registrationDto, registration);
+        BeanUtils.copyProperties(registrationDto, registration);
         registration.setRegStatus(Constants.REG_STATUS_0);//挂号添加为未收费
         registration.setCreateBy(registrationDto.getSimpleUser().getUserName());
         registration.setCreateTime(DateUtil.date());

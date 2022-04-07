@@ -29,17 +29,18 @@ public class RoleController {
     /**
      * 分页查询
      */
-    @GetMapping("listRoleForPage")
-    public AjaxResult listRoleForPage(RoleDto roleDto){
+    @PostMapping("listRoleForPage")
+    public AjaxResult listRoleForPage(@RequestBody RoleDto roleDto) {
         DataGridView gridView = this.roleService.listRolePage(roleDto);
-        return AjaxResult.success("查询成功",gridView.getData(),gridView.getTotal());
+        return AjaxResult.success("查询成功", gridView.getData(), gridView.getTotal());
     }
+
     /**
      * 添加
      */
     @PostMapping("addRole")
-    @Log(title = "添加角色",businessType = BusinessType.INSERT)
-    public AjaxResult addRole(@Validated RoleDto roleDto) {
+    @Log(title = "添加角色", businessType = BusinessType.INSERT)
+    public AjaxResult addRole(@Validated @RequestBody RoleDto roleDto) {
         roleDto.setSimpleUser(ShiroSecurityUtils.getCurrentSimpleUser());
         return AjaxResult.toAjax(this.roleService.addRole(roleDto));
     }
@@ -47,9 +48,9 @@ public class RoleController {
     /**
      * 修改
      */
-    @PutMapping("updateRole")
-    @Log(title = "修改角色",businessType = BusinessType.UPDATE)
-    public AjaxResult updateRole(@Validated RoleDto roleDto) {
+    @PostMapping("updateRole")
+    @Log(title = "修改角色", businessType = BusinessType.UPDATE)
+    public AjaxResult updateRole(@Validated @RequestBody RoleDto roleDto) {
         roleDto.setSimpleUser(ShiroSecurityUtils.getCurrentSimpleUser());
         return AjaxResult.toAjax(this.roleService.updateRole(roleDto));
     }
@@ -67,34 +68,33 @@ public class RoleController {
      * 删除
      */
     @DeleteMapping("deleteRoleByIds/{roleIds}")
-    @Log(title = "删除角色",businessType = BusinessType.DELETE)
+    @Log(title = "删除角色", businessType = BusinessType.DELETE)
     public AjaxResult deleteRoleByIds(@PathVariable @Validated @NotEmpty(message = "要删除的ID不能为空") Long[] roleIds) {
         return AjaxResult.toAjax(this.roleService.deleteRoleByIds(roleIds));
     }
-
-
 
 
     /**
      * 保存角色和菜单之间的关系
      */
     @PostMapping("saveRoleMenu/{roleId}/{menuIds}")
-    public AjaxResult saveRoleMenu(@PathVariable Long roleId,@PathVariable Long[] menuIds){
+    public AjaxResult saveRoleMenu(@PathVariable Long roleId, @PathVariable Long[] menuIds) {
         /**
          * 因为我们用的路径参数，前端可能传过来的menuIds是一个空的，但是为空的话无法匹配上面的路径
          * 所以如果为空，我们让前端传一个-1过来，如果是-1说明当前角色一个权限也没有选择
          */
-        if(menuIds.length==1&&menuIds[0].equals(-1L)){
-            menuIds=new Long[]{};
+        if (menuIds.length == 1 && menuIds[0].equals(-1L)) {
+            menuIds = new Long[]{};
         }
         this.roleService.saveRoleMenu(roleId, menuIds);
         return AjaxResult.success();
     }
+
     /**
      * 查询所有可用的角色
      */
     @GetMapping("selectAllRole")
-    public AjaxResult selectAllRole(){
+    public AjaxResult selectAllRole() {
         return AjaxResult.success(this.roleService.listAllRoles());
     }
 
@@ -102,27 +102,26 @@ public class RoleController {
      * 根据用户ID查询用户拥有的角色IDS
      */
     @GetMapping("getRoleIdsByUserId/{userId}")
-    public AjaxResult getRoleIdsByUserId(@PathVariable Long userId){
-        List<Long> roleIds=this.roleService.getRoleIdsByUserId(userId);
+    public AjaxResult getRoleIdsByUserId(@PathVariable Long userId) {
+        List<Long> roleIds = this.roleService.getRoleIdsByUserId(userId);
         return AjaxResult.success(roleIds);
     }
+
     /**
      * 保存角色和用户之间的关系
      */
     @PostMapping("saveRoleUser/{userId}/{roleIds}")
-    public AjaxResult saveRoleUser(@PathVariable Long userId,@PathVariable Long[] roleIds){
+    public AjaxResult saveRoleUser(@PathVariable Long userId, @PathVariable Long[] roleIds) {
         /**
          * 因为我们用的路径参数，前端可能传过来的roleIds是一个空的，但是为空的话无法匹配上面的路径
          * 所以如果为空，我们让前端传一个-1过来，如果是-1说明当前角色一个权限也没有选择
          */
-        if(roleIds.length==1&&roleIds[0].equals(-1L)){
-            roleIds=new Long[]{};
+        if (roleIds.length == 1 && roleIds[0].equals(-1L)) {
+            roleIds = new Long[]{};
         }
         this.roleService.saveRoleUser(userId, roleIds);
         return AjaxResult.success();
     }
-
-
 
 
 }

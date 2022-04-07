@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.bjsxt.mapper.SchedulingMapper">
     <resultMap id="BaseResultMap" type="com.bjsxt.domain.Scheduling">
         <!--@mbg.generated-->
@@ -18,19 +19,22 @@
         create_by
     </sql>
     <select id="queryHasSchedulingDeptIds" resultType="java.lang.Long">
-    select dept_id from his_scheduling
+        select outpatient_id from his_scheduling
         <where>
             <if test="deptId != null">
-                 dept_id=#{deptId}
+                dept_id=#{deptId}
+            </if>
+            <if test="outpatientId != null">
+                and outpatient_id=#{outpatientId}
             </if>
             <if test="schedulingDay != null">
                 and scheduling_day=#{schedulingDay}
             </if>
             <if test="schedulingType != null">
-              and scheduling_type=#{schedulingType}
+                and scheduling_type=#{schedulingType}
             </if>
             <if test="subsectionType != null">
-              and subsection_type=#{subsectionType}
+                and subsection_type=#{subsectionType}
             </if>
         </where>
     </select>

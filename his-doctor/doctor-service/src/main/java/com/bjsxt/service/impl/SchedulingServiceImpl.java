@@ -113,7 +113,7 @@ public class SchedulingServiceImpl implements SchedulingService {
      * @return
      */
     @Override
-    public List<Long> queryHasSchedulingDeptIds(Long deptId, String schedulingDay, String schedulingType, String subsectionType) {
-        return this.schedulingMapper.queryHasSchedulingDeptIds(deptId, schedulingDay, schedulingType, subsectionType);
+    public List<Long> queryHasSchedulingDeptIds(Long deptId, Long outpatientId, String schedulingDay, String schedulingType, String subsectionType) {
+        return this.schedulingMapper.queryHasSchedulingDeptIds(deptId, outpatientId, schedulingDay, schedulingType, subsectionType);
     }
 }
