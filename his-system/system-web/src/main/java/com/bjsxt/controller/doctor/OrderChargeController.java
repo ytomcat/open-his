@@ -121,7 +121,7 @@ public class OrderChargeController extends BaseController {
         this.orderChargeService.saveOrderAndItems(orderChargeFromDto);
         //2,因为是支付宝支付，所以我们要返回给页面一个二维码
         String outTradeNo=orderId;
-        String subject="SXT-医疗管理系统支付平台";
+        String subject="湖南信息大学医疗管理系统支付平台";
         String totalAmount=orderChargeFromDto.getOrderChargeDto().getOrderAmount().toString();
         String undiscountableAmount=null;
         String body="";

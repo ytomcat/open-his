@@ -19,6 +19,7 @@ import com.bjsxt.vo.DataGridView;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.dubbo.config.annotation.Method;
 import org.apache.dubbo.config.annotation.Service;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
@@ -51,7 +52,7 @@ public class OrderChargeServiceImpl implements OrderChargeService {
         List<OrderChargeItemDto> orderChargeItemDtoList = orderChargeFromDto.getOrderChargeItemDtoList();
 
         OrderCharge orderCharge=new OrderCharge();
-        BeanUtil.copyProperties(orderChargeDto,orderCharge);
+        BeanUtils.copyProperties(orderChargeDto,orderCharge);
         orderCharge.setOrderStatus(Constants.ORDER_STATUS_0);
         orderCharge.setCreateTime(DateUtil.date());
         orderCharge.setCreateBy(orderChargeFromDto.getSimpleUser().getUserName());
@@ -59,7 +60,7 @@ public class OrderChargeServiceImpl implements OrderChargeService {
         //保存详情
         for (OrderChargeItemDto orderChargeItemDto : orderChargeItemDtoList) {
             OrderChargeItem orderChargeItem=new OrderChargeItem();
-            BeanUtil.copyProperties(orderChargeItemDto,orderChargeItem);
+            BeanUtils.copyProperties(orderChargeItemDto,orderChargeItem);
             //订单关联订单ID
             orderChargeItem.setOrderId(orderCharge.getOrderId());
             orderChargeItem.setStatus(Constants.ORDER_DETAILS_STATUS_0);

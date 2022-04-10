@@ -18,6 +18,7 @@ import org.apache.dubbo.config.annotation.Reference;
 import org.aspectj.weaver.loadtime.Aj;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import javax.validation.constraints.NotBlank;
 import java.util.HashMap;
 import java.util.List;
@@ -38,9 +39,9 @@ public class PurchaseController extends BaseController {
     /**
      * 分页查询
      */
-    @GetMapping("listPurchaseForPage")
+    @PostMapping("listPurchaseForPage")
     @HystrixCommand
-    public AjaxResult listPurchaseForPage(PurchaseDto purchaseDto) {
+    public AjaxResult listPurchaseForPage(@RequestBody PurchaseDto purchaseDto) {
         DataGridView gridView = this.purchaseService.listPurchasePage(purchaseDto);
         return AjaxResult.success("查询成功", gridView.getData(), gridView.getTotal());
     }
@@ -49,9 +50,9 @@ public class PurchaseController extends BaseController {
     /**
      * 分页查询待审核的单据
      */
-    @GetMapping("listPurchasePendingForPage")
+    @PostMapping("listPurchasePendingForPage")
     @HystrixCommand
-    public AjaxResult listPurchasePendingForPage(PurchaseDto purchaseDto) {
+    public AjaxResult listPurchasePendingForPage(@RequestBody PurchaseDto purchaseDto) {
         purchaseDto.setStatus(Constants.STOCK_PURCHASE_STATUS_2);
         DataGridView gridView = this.purchaseService.listPurchasePage(purchaseDto);
         return AjaxResult.success("查询成功", gridView.getData(), gridView.getTotal());
@@ -226,13 +227,12 @@ public class PurchaseController extends BaseController {
         Purchase purchase = this.purchaseService.getPurchaseById(purchaseId);
         if (purchase.getStatus().equals(Constants.STOCK_PURCHASE_STATUS_3)) {
             //进行入库
-            return AjaxResult.toAjax(this.purchaseService.doInventory(purchaseId,ShiroSecurityUtils.getCurrentSimpleUser()));
+            return AjaxResult.toAjax(this.purchaseService.doInventory(purchaseId, ShiroSecurityUtils.getCurrentSimpleUser()));
         } else if (purchase.getStatus().equals(Constants.STOCK_PURCHASE_STATUS_6)) {
             return AjaxResult.fail("采购单【" + purchaseId + "】已入库，不能重复入库");
         } else {
             return AjaxResult.fail("采购单【" + purchaseId + "】没有审核通过，不能入库");
         }
     }
-
 
 }

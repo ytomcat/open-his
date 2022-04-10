@@ -24,7 +24,7 @@ import javax.validation.constraints.NotNull;
  */
 @RestController
 @RequestMapping("erp/producter")
-public class ProducterController  extends BaseController {
+public class ProducterController extends BaseController {
 
 
     @Reference//使用duboot的引用
@@ -33,19 +33,20 @@ public class ProducterController  extends BaseController {
     /**
      * 分页查询
      */
-    @GetMapping("listProducterForPage")
+    @PostMapping("listProducterForPage")
     @HystrixCommand
-    public AjaxResult listProducterForPage(ProducterDto producterDto){
+    public AjaxResult listProducterForPage(@RequestBody ProducterDto producterDto) {
         DataGridView gridView = this.producterService.listProducterPage(producterDto);
-        return AjaxResult.success("查询成功",gridView.getData(),gridView.getTotal());
+        return AjaxResult.success("查询成功", gridView.getData(), gridView.getTotal());
     }
+
     /**
      * 添加
      */
     @PostMapping("addProducter")
     @HystrixCommand
-    @Log(title = "添加生产厂家",businessType = BusinessType.INSERT)
-    public AjaxResult addProducter(@Validated ProducterDto producterDto) {
+    @Log(title = "添加生产厂家", businessType = BusinessType.INSERT)
+    public AjaxResult addProducter(@Validated @RequestBody ProducterDto producterDto) {
         producterDto.setSimpleUser(ShiroSecurityUtils.getCurrentSimpleUser());
         return AjaxResult.toAjax(this.producterService.addProducter(producterDto));
     }
@@ -53,10 +54,10 @@ public class ProducterController  extends BaseController {
     /**
      * 修改
      */
-    @PutMapping("updateProducter")
+    @PostMapping("updateProducter")
     @HystrixCommand
-    @Log(title = "修改生产厂家",businessType = BusinessType.UPDATE)
-    public AjaxResult updateProducter(@Validated ProducterDto producterDto) {
+    @Log(title = "修改生产厂家", businessType = BusinessType.UPDATE)
+    public AjaxResult updateProducter(@Validated @RequestBody ProducterDto producterDto) {
         producterDto.setSimpleUser(ShiroSecurityUtils.getCurrentSimpleUser());
         return AjaxResult.toAjax(this.producterService.updateProducter(producterDto));
     }
@@ -76,7 +77,7 @@ public class ProducterController  extends BaseController {
      */
     @DeleteMapping("deleteProducterByIds/{producterIds}")
     @HystrixCommand
-    @Log(title = "删除生产厂家",businessType = BusinessType.DELETE)
+    @Log(title = "删除生产厂家", businessType = BusinessType.DELETE)
     public AjaxResult deleteProducterByIds(@PathVariable @Validated @NotEmpty(message = "要删除的ID不能为空") Long[] producterIds) {
         return AjaxResult.toAjax(this.producterService.deleteProducterByIds(producterIds));
     }

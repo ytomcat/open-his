@@ -12,7 +12,7 @@ import java.util.Map;
  */
 public class TestPay {
     public static void main(String[] args) {
-        String outTradeNo = "yf123124124123412312312";
+        String outTradeNo = "yf123124124123412312323";
         String subject = "SXT-医疗管理系统支付平台";
         String totalAmount = "100";
         String undiscountableAmount = null;

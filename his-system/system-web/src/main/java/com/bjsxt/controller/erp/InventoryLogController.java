@@ -34,11 +34,11 @@ public class InventoryLogController extends BaseController {
     /**
      * 分页查询
      */
-    @GetMapping("listInventoryLogForPage")
+    @PostMapping("listInventoryLogForPage")
     @HystrixCommand
-    public AjaxResult listMedicinesForPage(InventoryLogDto inventoryLogDto){
+    public AjaxResult listMedicinesForPage(@RequestBody InventoryLogDto inventoryLogDto) {
         DataGridView gridView = this.inventoryLogService.listInventoryLogPage(inventoryLogDto);
-        return AjaxResult.success("查询成功",gridView.getData(),gridView.getTotal());
+        return AjaxResult.success("查询成功", gridView.getData(), gridView.getTotal());
     }
 
 }

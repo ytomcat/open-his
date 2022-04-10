@@ -31,19 +31,20 @@ public class MedicinesController extends BaseController {
     /**
      * 分页查询
      */
-    @GetMapping("listMedicinesForPage")
+    @PostMapping("listMedicinesForPage")
     @HystrixCommand
-    public AjaxResult listMedicinesForPage(MedicinesDto medicinesDto){
+    public AjaxResult listMedicinesForPage(@RequestBody MedicinesDto medicinesDto) {
         DataGridView gridView = this.medicinesService.listMedicinesPage(medicinesDto);
-        return AjaxResult.success("查询成功",gridView.getData(),gridView.getTotal());
+        return AjaxResult.success("查询成功", gridView.getData(), gridView.getTotal());
     }
+
     /**
      * 添加
      */
     @PostMapping("addMedicines")
     @HystrixCommand
-    @Log(title = "添加药品信息",businessType = BusinessType.INSERT)
-    public AjaxResult addMedicines(@Validated MedicinesDto medicinesDto) {
+    @Log(title = "添加药品信息", businessType = BusinessType.INSERT)
+    public AjaxResult addMedicines(@Validated @RequestBody MedicinesDto medicinesDto) {
         medicinesDto.setSimpleUser(ShiroSecurityUtils.getCurrentSimpleUser());
         return AjaxResult.toAjax(this.medicinesService.addMedicines(medicinesDto));
     }
@@ -53,8 +54,8 @@ public class MedicinesController extends BaseController {
      */
     @PutMapping("updateMedicines")
     @HystrixCommand
-    @Log(title = "修改药品信息",businessType = BusinessType.UPDATE)
-    public AjaxResult updateMedicines(@Validated MedicinesDto medicinesDto) {
+    @Log(title = "修改药品信息", businessType = BusinessType.UPDATE)
+    public AjaxResult updateMedicines(@Validated @RequestBody MedicinesDto medicinesDto) {
         medicinesDto.setSimpleUser(ShiroSecurityUtils.getCurrentSimpleUser());
         return AjaxResult.toAjax(this.medicinesService.updateMedicines(medicinesDto));
     }
@@ -74,7 +75,7 @@ public class MedicinesController extends BaseController {
      */
     @DeleteMapping("deleteMedicinesByIds/{medicinesIds}")
     @HystrixCommand
-    @Log(title = "删除药品信息",businessType = BusinessType.DELETE)
+    @Log(title = "删除药品信息", businessType = BusinessType.DELETE)
     public AjaxResult deleteMedicinesByIds(@PathVariable @Validated @NotEmpty(message = "要删除的ID不能为空") Long[] medicinesIds) {
         return AjaxResult.toAjax(this.medicinesService.deleteMedicinesByIds(medicinesIds));
     }
@@ -92,9 +93,9 @@ public class MedicinesController extends BaseController {
      * 调整库存
      */
     @HystrixCommand
-    @Log(title = "调整药品库存信息",businessType = BusinessType.UPDATE)
+    @Log(title = "调整药品库存信息", businessType = BusinessType.UPDATE)
     @PostMapping("updateMedicinesStorage/{medicinesId}/{medicinesStockNum}")
-    public AjaxResult xx(@PathVariable Long medicinesId,@PathVariable Long medicinesStockNum){
+    public AjaxResult xx(@PathVariable Long medicinesId, @PathVariable Long medicinesStockNum) {
         int i = this.medicinesService.updateMedicinesStorage(medicinesId, medicinesStockNum);
         return AjaxResult.toAjax(i);
     }

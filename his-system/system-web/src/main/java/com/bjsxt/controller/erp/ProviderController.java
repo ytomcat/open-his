@@ -31,19 +31,20 @@ public class ProviderController extends BaseController {
     /**
      * 分页查询
      */
-    @GetMapping("listProviderForPage")
+    @PostMapping("listProviderForPage")
     @HystrixCommand
-    public AjaxResult listProviderForPage(ProviderDto providerDto){
+    public AjaxResult listProviderForPage(@RequestBody ProviderDto providerDto) {
         DataGridView gridView = this.providerService.listProviderPage(providerDto);
-        return AjaxResult.success("查询成功",gridView.getData(),gridView.getTotal());
+        return AjaxResult.success("查询成功", gridView.getData(), gridView.getTotal());
     }
+
     /**
      * 添加
      */
     @PostMapping("addProvider")
     @HystrixCommand
-    @Log(title = "添加供应商",businessType = BusinessType.INSERT)
-    public AjaxResult addProvider(@Validated ProviderDto providerDto) {
+    @Log(title = "添加供应商", businessType = BusinessType.INSERT)
+    public AjaxResult addProvider(@Validated @RequestBody ProviderDto providerDto) {
         providerDto.setSimpleUser(ShiroSecurityUtils.getCurrentSimpleUser());
         return AjaxResult.toAjax(this.providerService.addProvider(providerDto));
     }
@@ -51,10 +52,10 @@ public class ProviderController extends BaseController {
     /**
      * 修改
      */
-    @PutMapping("updateProvider")
+    @PostMapping("updateProvider")
     @HystrixCommand
-    @Log(title = "修改供应商",businessType = BusinessType.UPDATE)
-    public AjaxResult updateProvider(@Validated ProviderDto providerDto) {
+    @Log(title = "修改供应商", businessType = BusinessType.UPDATE)
+    public AjaxResult updateProvider(@Validated @RequestBody ProviderDto providerDto) {
         providerDto.setSimpleUser(ShiroSecurityUtils.getCurrentSimpleUser());
         return AjaxResult.toAjax(this.providerService.updateProvider(providerDto));
     }
@@ -74,7 +75,7 @@ public class ProviderController extends BaseController {
      */
     @DeleteMapping("deleteProviderByIds/{providerIds}")
     @HystrixCommand
-    @Log(title = "删除供应商",businessType = BusinessType.DELETE)
+    @Log(title = "删除供应商", businessType = BusinessType.DELETE)
     public AjaxResult deleteProviderByIds(@PathVariable @Validated @NotEmpty(message = "要删除的ID不能为空") Long[] providerIds) {
         return AjaxResult.toAjax(this.providerService.deleteProviderByIds(providerIds));
     }
