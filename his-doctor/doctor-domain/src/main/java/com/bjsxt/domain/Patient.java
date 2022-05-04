@@ -15,15 +15,15 @@ import lombok.NoArgsConstructor;
 import java.util.Date;
 
 /**
-* @Author: 尚学堂 雷哥
-*/
+ * @Author: 尚学堂 雷哥
+ */
 
 /**
-    * 患者信息表
-    */
-@ApiModel(value="com-bjsxt-domain-Patient")
+ * 患者信息表
+ */
+@ApiModel(value = "com-bjsxt-domain-Patient")
 @Data
-@EqualsAndHashCode(callSuper=true)
+@EqualsAndHashCode(callSuper = true)
 @AllArgsConstructor
 @NoArgsConstructor
 @TableName(value = "his_patient")
@@ -32,63 +32,70 @@ public class Patient extends BaseEntity {
      * 主键
      */
     @TableId(value = "patient_id", type = IdType.INPUT)
-    @ApiModelProperty(value="主键")
+    @ApiModelProperty(value = "主键")
     private String patientId;
 
     /**
      * 患者姓名
      */
     @TableField(value = "name")
-    @ApiModelProperty(value="患者姓名")
+    @ApiModelProperty(value = "患者姓名")
     private String name;
 
     /**
      * 患者电话
      */
     @TableField(value = "phone")
-    @ApiModelProperty(value="患者电话")
+    @ApiModelProperty(value = "患者电话")
     private String phone;
 
     /**
      * 患者性别0男1女 2未知字典表 sys_user_sex
      */
     @TableField(value = "sex")
-    @ApiModelProperty(value="患者性别0男1女 2未知字典表 sys_user_sex")
+    @ApiModelProperty(value = "患者性别0男1女 2未知字典表 sys_user_sex")
     private String sex;
 
     /**
      * 出生年月
      */
     @TableField(value = "birthday")
-    @ApiModelProperty(value="出生年月")
+    @ApiModelProperty(value = "出生年月")
     private String birthday;
 
     /**
      * 身份证号[认证ID]
      */
     @TableField(value = "id_card")
-    @ApiModelProperty(value="身份证号[认证ID]")
+    @ApiModelProperty(value = "身份证号[认证ID]")
     private String idCard;
 
     /**
      * 地址信息
      */
     @TableField(value = "address")
-    @ApiModelProperty(value="地址信息")
+    @ApiModelProperty(value = "地址信息")
     private String address;
+
+    /**
+     * 接诊医生
+     */
+    @TableField(value = "doctor_name")
+    @ApiModelProperty(value = "接诊医生")
+    private String doctorName;
 
     /**
      * 过敏信息
      */
     @TableField(value = "allergy_info")
-    @ApiModelProperty(value="过敏信息")
+    @ApiModelProperty(value = "过敏信息")
     private String allergyInfo;
 
     /**
      * 是否完善信息，0未完善1已完善 字典表 his_patient_msg_final
      */
     @TableField(value = "is_final")
-    @ApiModelProperty(value="是否完善信息，0未完善1已完善 字典表 his_patient_msg_final")
+    @ApiModelProperty(value = "是否完善信息，0未完善1已完善 字典表 his_patient_msg_final")
     private String isFinal;
 
     /**
@@ -96,7 +103,7 @@ public class Patient extends BaseEntity {
      */
     @TableField(value = "password")
     @JsonIgnore
-    @ApiModelProperty(value="登录密码")
+    @ApiModelProperty(value = "登录密码")
     private String password;
 
     /**
@@ -104,35 +111,35 @@ public class Patient extends BaseEntity {
      */
     @TableField(value = "openid")
     @JsonIgnore
-    @ApiModelProperty(value="微信openid")
+    @ApiModelProperty(value = "微信openid")
     private String openid;
 
     /**
      * 最后登录ip
      */
     @TableField(value = "last_login_ip")
-    @ApiModelProperty(value="最后登录ip")
+    @ApiModelProperty(value = "最后登录ip")
     private String lastLoginIp;
 
     /**
      * 最后登录时间
      */
     @TableField(value = "last_login_time")
-    @ApiModelProperty(value="最后登录时间")
+    @ApiModelProperty(value = "最后登录时间")
     private Date lastLoginTime;
 
     /**
      * 创建时间
      */
     @TableField(value = "create_time")
-    @ApiModelProperty(value="创建时间")
+    @ApiModelProperty(value = "创建时间")
     private Date createTime;
 
     /**
      * 更新时间
      */
     @TableField(value = "update_time")
-    @ApiModelProperty(value="更新时间")
+    @ApiModelProperty(value = "更新时间")
     private Date updateTime;
 
     public static final String COL_PATIENT_ID = "patient_id";

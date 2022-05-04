@@ -81,6 +81,8 @@ public class UserServiceImpl implements UserService {
         return this.userMapper.insert(user);
     }
 
+
+
     public static void main(String[] args) {
         String defaultPwd = "17373917551".substring(5);
         System.out.println(defaultPwd);
@@ -146,5 +148,13 @@ public class UserServiceImpl implements UserService {
         qw.eq(User.COL_SCHEDULING_FLAG, Constants.SCHEDULING_FLAG_TRUE);//需要排班的
         qw.eq(User.COL_STATUS, Constants.STATUS_TRUE);//可用的用户
         return this.userMapper.selectList(qw);
+    }
+
+    @Override
+    public User getUserInfo(Long deptId) {
+        QueryWrapper queryWrapper = new QueryWrapper();
+        queryWrapper.eq("outpatient_id", deptId);
+        User user = userMapper.selectOne(queryWrapper);
+        return user;
     }
 }

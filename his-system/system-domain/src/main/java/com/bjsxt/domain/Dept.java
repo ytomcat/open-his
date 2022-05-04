@@ -113,7 +113,7 @@ public class Dept extends BaseEntity {
      * 部门描述
      */
     @TableField(value = "description")
-    @ApiModelProperty(value = "创建时间")
+    @ApiModelProperty(value = "部门描述")
     private String description;
 
     /**

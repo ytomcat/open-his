@@ -1,18 +1,19 @@
 package com.bjsxt.controller.doctor;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.bjsxt.constants.Constants;
 import com.bjsxt.controller.BaseController;
 import com.bjsxt.domain.Dept;
 import com.bjsxt.domain.Patient;
 import com.bjsxt.domain.Registration;
+import com.bjsxt.domain.User;
 import com.bjsxt.dto.PatientDto;
 import com.bjsxt.dto.RegistrationDto;
 import com.bjsxt.dto.RegistrationFormDto;
 import com.bjsxt.dto.RegistrationQueryDto;
-import com.bjsxt.service.DeptService;
-import com.bjsxt.service.PatientService;
-import com.bjsxt.service.RegistrationService;
-import com.bjsxt.service.SchedulingService;
+import com.bjsxt.mapper.UserMapper;
+import com.bjsxt.service.*;
 import com.bjsxt.utils.IdGeneratorSnowflake;
 import com.bjsxt.utils.ShiroSecurityUtils;
 import com.bjsxt.vo.AjaxResult;
@@ -25,7 +26,9 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import sun.invoke.util.Wrapper;
 
+import javax.annotation.Resource;
 import java.util.Collections;
 import java.util.List;
 
@@ -48,6 +51,12 @@ public class RegistrationController extends BaseController {
 
     @Reference
     private RegistrationService registrationService;
+
+    @Resource
+    private UserService userService;
+
+    @Resource
+    private UserMapper userMapper;
 
     /**
      * 查询出所有的排班的部门列表
@@ -116,7 +125,11 @@ public class RegistrationController extends BaseController {
         registrationDto.setRegId(IdGeneratorSnowflake.generatorIdWithProfix(Constants.ID_PROFIX_GH));
         registrationDto.setPatientId(patient.getPatientId());
         registrationDto.setPatientName(patient.getName());
-        registrationDto.setRegNumber(dept.getRegNumber() + 1);//编号+1
+        registrationDto.setRegNumber(dept.getRegNumber() - 1);//编号+1
+        User user = userService.getUserInfo(registrationDto.getDeptId());
+
+        System.out.println(user);
+        registrationDto.setDoctorName(user.getUserName());
         this.registrationService.addRegistration(registrationDto);
         //更新当天的科室号段
         this.deptService.updateDeptRegNumber(dept.getDeptId(), dept.getRegNumber() + 1);

@@ -75,4 +75,6 @@ public interface UserService {
      * 如果部门ID为空，那么查询所有要排班的用户信息
      */
     List<User> queryUsersNeedScheduling(Long userId,Long deptId);
+
+    User getUserInfo(Long deptId);
 }

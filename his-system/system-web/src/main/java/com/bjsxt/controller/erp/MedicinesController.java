@@ -52,7 +52,7 @@ public class MedicinesController extends BaseController {
     /**
      * 修改
      */
-    @PutMapping("updateMedicines")
+    @PostMapping("updateMedicines")
     @HystrixCommand
     @Log(title = "修改药品信息", businessType = BusinessType.UPDATE)
     public AjaxResult updateMedicines(@Validated @RequestBody MedicinesDto medicinesDto) {
