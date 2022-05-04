@@ -28,8 +28,8 @@ import java.util.List;
 /**
  * @Author: 尚学堂 雷哥
  */
-@Service(methods = {@Method(name = "saveOrderAndItems",retries = 1),
-        @Method(name = "paySuccess",retries = 1)})
+@Service(methods = {@Method(name = "saveOrderAndItems", retries = 1),
+        @Method(name = "paySuccess", retries = 1)})
 public class OrderChargeServiceImpl implements OrderChargeService {
 
 
@@ -44,23 +44,24 @@ public class OrderChargeServiceImpl implements OrderChargeService {
 
     /**
      * 保存订单及详情
+     *
      * @param orderChargeFromDto
      */
     @Override
     public void saveOrderAndItems(OrderChargeFromDto orderChargeFromDto) {
         OrderChargeDto orderChargeDto = orderChargeFromDto.getOrderChargeDto();
         List<OrderChargeItemDto> orderChargeItemDtoList = orderChargeFromDto.getOrderChargeItemDtoList();
-
-        OrderCharge orderCharge=new OrderCharge();
-        BeanUtils.copyProperties(orderChargeDto,orderCharge);
+//test
+        OrderCharge orderCharge = new OrderCharge();
+        BeanUtils.copyProperties(orderChargeDto, orderCharge);
         orderCharge.setOrderStatus(Constants.ORDER_STATUS_0);
         orderCharge.setCreateTime(DateUtil.date());
         orderCharge.setCreateBy(orderChargeFromDto.getSimpleUser().getUserName());
-        int i=this.orderChargeMapper.insert(orderCharge);
+        int i = this.orderChargeMapper.insert(orderCharge);
         //保存详情
         for (OrderChargeItemDto orderChargeItemDto : orderChargeItemDtoList) {
-            OrderChargeItem orderChargeItem=new OrderChargeItem();
-            BeanUtils.copyProperties(orderChargeItemDto,orderChargeItem);
+            OrderChargeItem orderChargeItem = new OrderChargeItem();
+            BeanUtils.copyProperties(orderChargeItemDto, orderChargeItem);
             //订单关联订单ID
             orderChargeItem.setOrderId(orderCharge.getOrderId());
             orderChargeItem.setStatus(Constants.ORDER_DETAILS_STATUS_0);
@@ -70,13 +71,14 @@ public class OrderChargeServiceImpl implements OrderChargeService {
 
     /**
      * 支付成功的回调
-     * @param orderId 支付订单ID
+     *
+     * @param orderId       支付订单ID
      * @param payPlatformId 平台交易ID 如果是现金，则为空
-     * @param payType 支付类型
+     * @param payType       支付类型
      */
     @Override
-    public void paySuccess(String orderId, String payPlatformId,String payType) {
-       //根据支付订单ID查询支付订单
+    public void paySuccess(String orderId, String payPlatformId, String payType) {
+        //根据支付订单ID查询支付订单
         OrderCharge orderCharge = this.orderChargeMapper.selectById(orderId);
         //设置平台交易编号
         orderCharge.setPayPlatformId(payPlatformId);
@@ -89,26 +91,26 @@ public class OrderChargeServiceImpl implements OrderChargeService {
         //更新订单状态
         this.orderChargeMapper.updateById(orderCharge);
         //根据支付订单号查询支付订单详情
-        QueryWrapper<OrderChargeItem> qw=new QueryWrapper<>();
-        qw.eq(OrderChargeItem.COL_ORDER_ID,orderId);
+        QueryWrapper<OrderChargeItem> qw = new QueryWrapper<>();
+        qw.eq(OrderChargeItem.COL_ORDER_ID, orderId);
         List<OrderChargeItem> orderChargeItems = this.orderChargeItemMapper.selectList(qw);
-        List<String> allItemIds=new ArrayList<>();
+        List<String> allItemIds = new ArrayList<>();
         for (OrderChargeItem orderChargeItem : orderChargeItems) {
             allItemIds.add(orderChargeItem.getItemId());
         }
 
         //更新收费详情的状态
-        OrderChargeItem orderItemObj=new OrderChargeItem();
+        OrderChargeItem orderItemObj = new OrderChargeItem();
         orderItemObj.setStatus(Constants.ORDER_DETAILS_STATUS_1);
-        QueryWrapper<OrderChargeItem> orderItemQw=new QueryWrapper<>();
-        orderItemQw.in(OrderChargeItem.COL_ITEM_ID,allItemIds);
-        this.orderChargeItemMapper.update(orderItemObj,orderItemQw);
+        QueryWrapper<OrderChargeItem> orderItemQw = new QueryWrapper<>();
+        orderItemQw.in(OrderChargeItem.COL_ITEM_ID, allItemIds);
+        this.orderChargeItemMapper.update(orderItemObj, orderItemQw);
         //更新处方详情的状态
-        CareOrderItem careItemObj=new CareOrderItem();
+        CareOrderItem careItemObj = new CareOrderItem();
         careItemObj.setStatus(Constants.ORDER_DETAILS_STATUS_1);
-        QueryWrapper<CareOrderItem> careItemQw=new QueryWrapper<>();
-        careItemQw.in(CareOrderItem.COL_ITEM_ID,allItemIds);
-        this.careOrderItemMapper.update(careItemObj,careItemQw);
+        QueryWrapper<CareOrderItem> careItemQw = new QueryWrapper<>();
+        careItemQw.in(CareOrderItem.COL_ITEM_ID, allItemIds);
+        this.careOrderItemMapper.update(careItemObj, careItemQw);
     }
 
     @Override
@@ -118,19 +120,19 @@ public class OrderChargeServiceImpl implements OrderChargeService {
 
     @Override
     public DataGridView queryAllOrderChargeForPage(OrderChargeDto orderChargeDto) {
-        Page<OrderCharge> page=new Page<>(orderChargeDto.getPageNum(),orderChargeDto.getPageSize());
-        QueryWrapper<OrderCharge> qw=new QueryWrapper<>();
-        qw.like(StringUtils.isNotBlank(orderChargeDto.getPatientName()),OrderCharge.COL_PATIENT_NAME,orderChargeDto.getPatientName());
-        qw.like(StringUtils.isNotBlank(orderChargeDto.getRegId()),OrderCharge.COL_REG_ID,orderChargeDto.getRegId());
+        Page<OrderCharge> page = new Page<>(orderChargeDto.getPageNum(), orderChargeDto.getPageSize());
+        QueryWrapper<OrderCharge> qw = new QueryWrapper<>();
+        qw.like(StringUtils.isNotBlank(orderChargeDto.getPatientName()), OrderCharge.COL_PATIENT_NAME, orderChargeDto.getPatientName());
+        qw.like(StringUtils.isNotBlank(orderChargeDto.getRegId()), OrderCharge.COL_REG_ID, orderChargeDto.getRegId());
         qw.orderByDesc(OrderCharge.COL_CREATE_TIME);
-        this.orderChargeMapper.selectPage(page,qw);
-        return new DataGridView(page.getTotal(),page.getRecords());
+        this.orderChargeMapper.selectPage(page, qw);
+        return new DataGridView(page.getTotal(), page.getRecords());
     }
 
     @Override
     public List<OrderChargeItem> queryOrderChargeItemByOrderId(String orderId) {
-        QueryWrapper<OrderChargeItem> qw=new QueryWrapper<>();
-        qw.eq(OrderChargeItem.COL_ORDER_ID,orderId);
+        QueryWrapper<OrderChargeItem> qw = new QueryWrapper<>();
+        qw.eq(OrderChargeItem.COL_ORDER_ID, orderId);
         return this.orderChargeItemMapper.selectList(qw);
     }
 
